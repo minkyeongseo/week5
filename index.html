@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>이미지 일렬로 이동</title>
+    <style>
+      body {
+            background-color: black; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+          }
+        #container {
+          position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            height: 180px; 
+        }
+
+        .image {
+            display: inline-block;
+            width: 180px; 
+            height: 180px; 
+            transition: transform 1s;
+        }
+
+     #text-container {
+            text-align: center;
+            padding-bottom: 20px; 
+            color: white;
+            font-family: "Noto sans-serif;";
+            font-size: 30px;
+        }
+        .sentence {
+            text-align: center;
+            margin-bottom: 30px; 
+        }
+         .dot {
+            width: 7px;
+            height: 7px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            animation: fall 8s linear infinite; /* 애니메이션 적용 */
+        }
+
+        @keyframes fall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+    </div>
+    <div id="container">
+    </div>
+
+    <div id="text-container">
+        <p id="text"></p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const textContainer = document.getElementById("text-container");
+            const textElement = document.getElementById("text");
+            const text = [
+                "탕후루의 인기가 끊이지 않고 있다.",
+                "한 치과의사가 탕후루에",
+                "고마움을 표했다.",
+                "그는 탕후루를 먹어보더니",
+                "탕후루는 충치에 최악이라며",
+                "앞으로도 탕후루 유행이 계속된다면",
+                "드디어 강남에 집을 살 수 있지 않을까",
+                "생각했다고 한다.",
+                "양치질을 해도 ",
+                "당분이 쉽게 제거되진 않는다.",
+                "오히려 먹는 양보다",
+                "먹는 횟수가 더 영향을 주며",
+                "이왕 먹어야겠다면",
+                "한 번에 몰아 먹는 게 나을지도?"
+            ];
+            let index = 0;
+
+            function displayText() {
+                if (index < text.length) {
+                    textElement.innerHTML += text[index] + "<br>";
+                    index++;
+                    textContainer.scrollTop = textContainer.scrollHeight; // 스크롤 아래로 이동
+                    setTimeout(displayText, 1000); // 1초마다 다음 줄을 표시
+                }
+            }
+
+            displayText();
+        });
+    </script>
+        <script>
+        // 5초 뒤에 흰색 점을 생성하여 추가
+        setTimeout(function() {
+            setInterval(function() {
+                const dot = document.createElement("div");
+                dot.classList.add("dot");
+                dot.style.left = `${Math.random() * 100}%`; // 가로 위치 랜덤 지정
+                document.body.appendChild(dot);
+
+                // 애니메이션 종료 후 요소 제거
+                dot.addEventListener("animationend", function() {
+                    document.body.removeChild(dot);
+                });
+            }, 200); // 0.5초마다 흰색 점 생성
+        }, 2500); // 후에 실행
+    </script>
+      
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById("container");
+            const imageWidth = 100; 
+            let currentLeft = 0;
+
+           
+            function createAndPositionImage() {
+                const image = new Image();
+                image.src = "1.png"; 
+                image.classList.add("image");
+
+               
+                image.style.transform = `translateX(${currentLeft}px)`;
+                container.appendChild(image);
+
+               
+                currentLeft += imageWidth;
+            }
+
+            // 1초마다 이미지 추가
+            setInterval(createAndPositionImage, 1000);
+        });
+
+    </script>
+     <script>
+        document.addEventListener("click", function(event) {
+            const dot = document.createElement("div");
+            dot.classList.add("dot");
+            dot.style.left = `${event.clientX}px`;
+            dot.style.top = `${event.clientY}px`;
+            document.body.appendChild(dot);
+
+            // 애니메이션 종료 후 요소 제거
+            dot.addEventListener("animationend", function() {
+                document.body.removeChild(dot);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
